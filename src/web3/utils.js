@@ -10,6 +10,6 @@ export const getAccount = async () => {
 
 export const getContract = () => {
   const signer = getProvider().getSigner();
-  const contract = new ethers.Contract("0xC5576838BB835c1B12c4A78D79871d4492505f19", abi, signer);
+  const contract = new ethers.Contract(import.meta.env.VITE_CONTRACT, abi, signer);
   return contract;
 };
