@@ -6,10 +6,16 @@ import "./App.css";
 
 export default function App() {
   const [topics, setTopics] = useState([]);
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
     async function main() {
-      await getAccount();
+      try {
+        await getAccount();
+        setConnected(true);
+      } catch {
+        console.log("not connected");
+      }
       const contract = getContract();
       console.log("getting topics");
       const data = await contract.functions.getTopics();
@@ -21,7 +27,7 @@ export default function App() {
     main();
   }, []);
 
-  if (window.ethereum) {
+  if (window.ethereum && connected) {
     return (
       <section className="center-items">
         <section className="App">
@@ -35,9 +41,18 @@ export default function App() {
     );
   }
 
-  return (
-    <center style={{ marginBlock: "20px" }}>
-      <h1>Please install MetaMask to use this dApp.</h1>
-    </center>
-  );
+  if (!window.ethereum)
+    return (
+      <center style={{ marginBlock: "20px" }}>
+        <h1>Please install MetaMask to use this dApp.</h1>
+      </center>
+    );
+
+  if (!connected) {
+    return (
+      <center style={{ marginBlock: "20px" }}>
+        <h1>Please connect MetaMask to use this dApp.</h1>
+      </center>
+    );
+  }
 }
