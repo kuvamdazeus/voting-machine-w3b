@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import VoteTopic from "../VoteTopic";
-import { getContract } from "../web3/utils";
+import { getAccount, getContract } from "../web3/utils";
 import "./App.css";
 
 export default function App() {
@@ -9,6 +9,7 @@ export default function App() {
 
   useEffect(() => {
     async function main() {
+      await getAccount();
       const contract = getContract();
       console.log("getting topics");
       const data = await contract.functions.getTopics();
